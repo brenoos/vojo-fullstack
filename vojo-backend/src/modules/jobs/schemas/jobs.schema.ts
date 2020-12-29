@@ -1,10 +1,10 @@
 import { SchemaFactory, Schema, Prop, raw } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type JobsDocument = Jobs & Document;
+export type JobsDocument = Job & Document;
 
 @Schema({ timestamps: true })
-export class Jobs {
+export class Job {
   @Prop()
   active: boolean;
 
@@ -52,4 +52,4 @@ export class Jobs {
   location: Record<string, any>;
 }
 
-export const JobsSchema = SchemaFactory.createForClass(Jobs);
+export const JobsSchema = SchemaFactory.createForClass(Job);
