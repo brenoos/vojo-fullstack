@@ -140,11 +140,8 @@ class Login extends Component {
   };
 
   loginSet = async (data) => {
-    const { error, headers } = await axios.post(
-      `${process.env.REACT_APP_API}/v3/auth/login`,
-      data
-    );
-    console.log(headers);
+    const { error, headers } = await axios.post('login', data);
+
     if (!error) {
       await this.setState({
         loginData: {

@@ -1,27 +1,29 @@
-import React, { useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import api from '../../services/api';
 import { Container, Header, Footer } from '@mindlab-vojo/component-library';
-import { useState } from 'react';
+import { FaEdit } from 'react-icons/fa';
+import { useEditJob } from '../../context/EditJob';
+import { useHistory } from 'react-router-dom';
 
 import './style.sass';
 
 const List = () => {
   const [jobs, setJobs] = useState([]);
+  const { setEditJob } = useEditJob();
+  const history = useHistory();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
     (async () => {
-      const { data } = await axios.get(
-        `${process.env.REACT_APP_API}/v3/jobs/`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const { data } = await api.get('jobs');
       setJobs(data);
     })();
   }, []);
+
+  const handleClick = (job) => {
+    setEditJob(job);
+    console.log(job);
+    history.push('/edit');
+  };
 
   return (
     <Container maxWidth='full'>
@@ -29,7 +31,15 @@ const List = () => {
       <div className='List__Container'>
         <ul>
           {(jobs || []).map((job) => (
-            <li>{job.title}</li>
+            <li>
+              <FaEdit
+                className='List__Button'
+                onClick={() => {
+                  handleClick(job);
+                }}
+              />
+              {job.title}
+            </li>
           ))}
         </ul>
       </div>
